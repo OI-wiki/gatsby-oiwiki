@@ -146,3 +146,15 @@ int main() {
 /* snip #2 */
 --8<-- "docs/test_code.cpp"
 ```
+
+### problem
+**reference**
+```managed
+include: code/dnd.problem
+```
+
+**inline**
+```managed
+solution:
+    cpp: test_code.cpp
+```

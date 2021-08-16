@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import MDRenderer from '../lib/MDRenderer'
 import Details from './Details'
 import Summary from './Summary'
+import SolutionCodes from './SolutionCodes'
 import { SmartLink, SmartLinkProps } from './Link'
 import SEO from './Seo'
 import StyledLayout from './StyledLayout'
@@ -73,6 +74,7 @@ const Mdx: React.FC<MdxProps> = ({ data: { mdx }, location }) => {
     summary: Summary,
     a: LinkGetter,
     inlinecode: InlineCode,
+    'ow-codes': SolutionCodes,
   }
 
   const isWIP = wordCount === 0 || (tags?.findIndex((x: string) => x === 'WIP') >= 0)

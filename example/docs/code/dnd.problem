@@ -1,0 +1,7 @@
+version: 1000
+id: 'oi-wiki:example/dnd'
+name: 'Divide and Conquer Example 1'
+target: ['!test']
+solution:
+  cpp: 'code/dnd.cpp'
+  python: 'code/dnd.py'
