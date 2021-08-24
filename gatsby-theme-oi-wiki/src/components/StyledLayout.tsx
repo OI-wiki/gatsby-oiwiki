@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface MyLayoutProps extends Partial<MetaProps> {
   description?: string;
-  toc?: TocObj;
+  headings?: TocObj;
   noMeta?: boolean;
   noComment?: boolean;
   noEdit?: boolean;
@@ -105,11 +105,11 @@ const MyLayout: React.FC<MyLayoutProps> = (props) => {
     relativePath = '',
     modifiedTime = '',
     tags = [],
-    toc = null,
+    headings = null,
     noMeta = false,
     noComment = false,
     noEdit = true,
-    noToc = !props.toc?.items,
+    noToc = !props.headings,
     overflow = false,
     isWIP = false,
     location = window.location,
@@ -168,8 +168,8 @@ const MyLayout: React.FC<MyLayoutProps> = (props) => {
           <Footer/>
         </div>
       </div>
-      {!noToc && toc?.items && <Grid item xs>
-        <Toc toc={toc} pathname={location.pathname}/>
+      {!noToc && headings && <Grid item xs>
+        <Toc toc={headings} pathname={location.pathname}/>
       </Grid>}
       <BackTop/>
     </>

@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import Slug from 'github-slugger'
 
 import { useStyles } from './styles'
 import { useSetting } from '../../lib/useSetting'
@@ -9,36 +10,33 @@ import smoothScrollTo from '../../lib/smoothScroll'
 import useThrottledOnScroll from '../../lib/useThrottledOnScroll'
 
 export interface TocItem {
-  url: string,
-  title: string;
-  items?: TocItem[];
-  level: number;
+  value: string;
+  depth: number;
 }
-
-export interface TocObj {
-  items: TocItem[];
-}
-
 export interface TocProps {
   pathname: string;
-  toc: TocObj;
+  toc: TocItem[];
 }
 
 const getIDFromHash = (url: string): string => url.substring(1, url.length)
 
 const TocConverter = (items: TocItem[]): Node[] => {
-  const minLevel = items.reduce((v, i) => Math.min(v, i.level), 5)
+  const minLevel = items.reduce((v, i) => Math.min(v, i.depth), 5)
   const curNode: Nullable<Node>[] = Array.from({ length: 6 }, () => null)
   const data: Node[] = []
   const REF_EXPR = /ref\d+$/
   let index: number
 
+  const slugs = new Slug()
+  slugs.reset()
+
   items.forEach((item) => {
-    const level = item.level - minLevel
+    const level = item.depth - minLevel
+    const title = item.value.replace(/<[^>]*>?/gm, '')
     index = level > 0 ? (curNode[level - 1]?.children.length || 0) : data.length
     const newNode: Node = {
-      url: item.url.replace(REF_EXPR, ''),
-      title: item.title.replace(REF_EXPR, ''),
+      url: `#${slugs.slug(title)}`.replace(REF_EXPR, ''),
+      title: title.replace(REF_EXPR, ''),
       level,
       index,
       children: [],
@@ -69,7 +67,7 @@ const bindHTMLElement = (toc: Node[]): void => {
 
 const TocEl: React.FC<TocProps> = (props) => {
   const { toc } = props
-  const items = toc.items
+  const items = toc
   const classes = useStyles()
   const [settings] = useSetting()
 
